@@ -1,51 +1,65 @@
-  #include <iostream>
+ #include <iostream>
 #include <vector>
 #include <string>
 #include <algorithm>
 
 using namespace std;
 
-// Base Flight class (encapsulation and abstraction)
+// Abstract Base Flight class (encapsulation and abstraction)
 class Flight {
 public:
     int flightNumber;
     string departure;
     string destination;
     int seatsAvailable;
-    string airlineName;
 
-    Flight(int flightNumber, string departure, string destination, int seatsAvailable, string airlineName)
-        : flightNumber(flightNumber), departure(departure), destination(destination), seatsAvailable(seatsAvailable), airlineName(airlineName) {}
+    Flight(int flightNumber, string departure, string destination, int seatsAvailable)
+        : flightNumber(flightNumber), departure(departure), destination(destination), seatsAvailable(seatsAvailable) {}
 
-    // Virtual method for polymorphism
-    virtual string getFlightType() {
-        return "Passenger Flight";
-    }
+    // Pure virtual function for flight type
+    virtual string getAirlineName() = 0;
 
     virtual void displayInfo() {
-        cout << "Flight Number: " << flightNumber << ", Airline: " << airlineName
-             << ", Departure: " << departure << ", Destination: " << destination
-             << ", Seats Available: " << seatsAvailable << ", Type: " << getFlightType() << endl;
+        cout << "Flight Number: " << flightNumber 
+             << ", Airline: " << getAirlineName() 
+             << ", Departure: " << departure 
+             << ", Destination: " << destination 
+             << ", Seats Available: " << seatsAvailable << endl;
+    }
+
+    virtual ~Flight() {}
+};
+
+// Derived class: AirIndia
+class AirIndia : public Flight {
+public:
+    AirIndia(int flightNumber, string departure, string destination, int seatsAvailable)
+        : Flight(flightNumber, departure, destination, seatsAvailable) {}
+
+    string getAirlineName() override {
+        return "Air India";
     }
 };
 
-// Derived class: CargoFlight (inheritance and polymorphism)
-class CargoFlight : public Flight {
+// Derived class: Vistara
+class Vistara : public Flight {
 public:
-    int cargoCapacity; // Capacity in tons
+    Vistara(int flightNumber, string departure, string destination, int seatsAvailable)
+        : Flight(flightNumber, departure, destination, seatsAvailable) {}
 
-    CargoFlight(int flightNumber, string departure, string destination, int cargoCapacity, string airlineName)
-        : Flight(flightNumber, departure, destination, 0, airlineName), cargoCapacity(cargoCapacity) {}
-
-    // Overriding getFlightType to demonstrate polymorphism
-    string getFlightType() override {
-        return "Cargo Flight";
+    string getAirlineName() override {
+        return "Vistara";
     }
+};
 
-    void displayInfo() override {
-        cout << "Flight Number: " << flightNumber << ", Airline: " << airlineName
-             << ", Departure: " << departure << ", Destination: " << destination
-             << ", Cargo Capacity: " << cargoCapacity << " tons, Type: " << getFlightType() << endl;
+// Derived class: Indigo
+class Indigo : public Flight {
+public:
+    Indigo(int flightNumber, string departure, string destination, int seatsAvailable)
+        : Flight(flightNumber, departure, destination, seatsAvailable) {}
+
+    string getAirlineName() override {
+        return "Indigo";
     }
 };
 
@@ -69,7 +83,7 @@ class AirlineBookingSystem {
 public:
     AirlineBookingSystem() : nextBookingID(1) {}
 
-    // Adding flights (passenger and cargo flights)
+    // Adding flights (Air India, Vistara, Indigo)
     void addFlight(Flight* flight) {
         flights.push_back(flight);
     }
@@ -142,12 +156,10 @@ public:
 int main() {
     AirlineBookingSystem system;
 
-    // Adding some passenger and cargo flights (inheritance and polymorphism)
-    system.addFlight(new Flight(101, "New York", "LosAngeles", 50, "AirIndia"));
-    system.addFlight(new Flight(102, "NewYork", "Chicago", 30, "Kingfisher"));
-    system.addFlight(new Flight(103, "Los Angeles", "Chicago", 20, "Vistara"));
-    system.addFlight(new CargoFlight(201, "Chicago", "NewYork", 10, "AirIndia Cargo"));
-    system.addFlight(new CargoFlight(202, "LosAngeles", "NewYork", 8, "VistaraCargo"));
+    // Adding flights for AirIndia, Vistara, and Indigo (inheritance and polymorphism)
+    system.addFlight(new AirIndia(101, "New York", "Los Angeles", 50));
+    system.addFlight(new Vistara(102, "New York", "Chicago", 30));
+    system.addFlight(new Indigo(103, "Los Angeles", "Chicago", 20));
 
     int choice;
     do {
