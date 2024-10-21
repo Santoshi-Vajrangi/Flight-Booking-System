@@ -1,4 +1,4 @@
- #include <iostream>
+   #include <iostream>
 #include <vector>
 #include <string>
 #include <algorithm>
@@ -157,9 +157,9 @@ int main() {
     AirlineBookingSystem system;
 
     // Adding flights for AirIndia, Vistara, and Indigo (inheritance and polymorphism)
-    system.addFlight(new AirIndia(101, "New York", "Los Angeles", 50));
-    system.addFlight(new Vistara(102, "New York", "Chicago", 30));
-    system.addFlight(new Indigo(103, "Los Angeles", "Chicago", 20));
+    system.addFlight(new AirIndia(101, "NewYork", "LosAngeles", 50));
+    system.addFlight(new Vistara(102, "NewYork", "Chicago", 30));
+    system.addFlight(new Indigo(103, "LosAngeles", "Chicago", 20));
 
     int choice;
     do {
